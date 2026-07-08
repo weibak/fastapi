@@ -6,14 +6,14 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_db  # Импортируем наш асинхронный генератор
 from app.models import User
-from app.schemas import UserResponse, UserCreate
+from app import schemas
 
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
-@router.post("/", response_model=UserResponse)
+@router.post("/", response_model=schemas.UserResponse)
 async def create_user(
-        user: UserCreate,
+        user: schemas.UserCreate,
         # FastAPI сам вызовет get_db, дождется сессии и передаст её сюда
         db: AsyncSession = Depends(get_db)
 ):
@@ -34,7 +34,7 @@ async def create_user(
 
     return db_user
 
-@router.get("/", response_model=List[UserResponse])
+@router.get("/", response_model=List[schemas.UserResponse])
 async def get_users(
         limit=100,
         # FastAPI сам вызовет get_db, дождется сессии и передаст её сюда

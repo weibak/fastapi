@@ -9,7 +9,7 @@ sqlalchemy
 psycopg2-binary
 aiosqlite
 alembic
-
+sqlalchemy_file
 # HTTP Client (for making external API calls)
 httpx
 

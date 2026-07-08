@@ -1,24 +1,20 @@
-from app.schemas.profile import ProfileBase
 from pydantic import BaseModel, EmailStr
 
 
 # Базовая схема с общими полями, которые есть всегда
-class UserBase(BaseModel):
-    email: EmailStr
-
-
-# Схема для СОЗДАНИЯ пользователя (Input DTO)
-# Клиент отправляет нам эти данные
-class UserCreate(UserBase):
-    password: str  # Клиент шлет сырой пароль, мы его валидируем здесь
-    profile: ProfileBase
-
+class ProfileBase(BaseModel):
+    first_name: str
+    last_name: str
+    bio: str
+    
 
 # Схема для ОТВЕТА (Output DTO)
 # Эти данные мы отдаем клиенту
-class UserResponse(UserBase):
+class ProfileResponse(ProfileBase):
     id: int
-    is_active: bool
+    first_name: str
+    last_name: str
+    bio: str
 
     # Обратите внимание: поля password здесь НЕТ. 
     # Мы отфильтровали его на уровне схемы. Pydantic просто проигнорирует его

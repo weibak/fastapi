@@ -1,0 +1,17 @@
+# Core Framework
+fastapi[standard]
+
+# Environment Configuration
+python-dotenv
+
+# Database (SQLAlchemy + PostgreSQL example)
+sqlalchemy
+psycopg2-binary
+aiosqlite
+alembic
+
+# HTTP Client (for making external API calls)
+httpx
+
+# Form Data & File Upload support
+python-multipart

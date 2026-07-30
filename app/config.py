@@ -20,14 +20,14 @@ class Settings(BaseSettings):
 settings = Settings(
     REDIS_PORT=int(os.getenv("REDIS_PORT", 6379)), 
     REDIS_PASSWORD=os.getenv("REDIS_PASSWORD", ""),
-    REDIS_HOST=os.getenv("REDIS_HOST", "localhost"),
-    BASE_URL=os.getenv("BASE_URL", "http://127.0.0.1:8000")
+    REDIS_HOST=os.getenv("REDIS_HOST", "redis"),
+    BASE_URL=os.getenv("BASE_URL", "http://host.docker.internal:8000")
 )
 
 redis_url = "localhost"
 celery_app = Celery("celery_worker",     
-                    broker='redis://localhost:6379/0',
-                    backend=os.getenv('DATABASE_URL'),
+                    broker=os.getenv('CELERY_BROKER_URL', 'redis://redis:6379/0'),
+                    backend=os.getenv('CELERY_RESULT_BACKEND', 'redis://redis:6379/0'),
                     include=['app.tasks']
                     )
 # Убираем SSL параметры, так как используем redis:// схему

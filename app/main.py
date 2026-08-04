@@ -1,5 +1,5 @@
 import logging
-
+import os
 
 from app.config import redis_client
 from app.logging_config import setup_logging
@@ -23,7 +23,12 @@ try:
 except Exception as e:
     logger.info(f"Произошла ошибка : {e}")
 
-app = FastAPI(title="My Architecture App")
+app = FastAPI(title="My Architecture App",
+              version="1.0.1",
+              swagger_ui_parameters={"deepLinking": True, "syntaxHighlight": {"theme": "obsidian"}},
+              docs_url=None if os.getenv("ENV") == "production" else "/docs",
+              redoc_url=None if os.getenv("ENV") == "production" else "/redoc"
+              )
 
 # Подключаем роутер к главному приложению.
 # Это похоже на подключение плагина.

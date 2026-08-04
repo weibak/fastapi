@@ -47,3 +47,13 @@ services:
     depends_on:
       - redis
       - celery_worker
+  nginx:
+    image: nginx:alpine
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      # Подменяем стандартный дефолтный конфиг Nginx нашим собственным
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api

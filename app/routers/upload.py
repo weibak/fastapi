@@ -4,12 +4,19 @@ import os
 import string
 from random import choices
 from traceback import format_exc
+from typing import List
+from sqlalchemy import select
+
+from app.database import get_db
+from fastapi import APIRouter, Depends
 
 import requests
 
 from app.config import settings, celery_app, redis_client
 from app.logging_config import setup_logging
 from fastapi import APIRouter, HTTPException, UploadFile, Form
+from sqlalchemy.ext.asyncio import AsyncSession
+
 setup_logging()
 
 logger = logging.getLogger("fastapi")
@@ -112,3 +119,20 @@ async def delete_file(file_id: str, dell_id: str):
     except OSError as e:
         logger.error(f"Error deleting file {file_path}: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Ошибка удаления файла: {str(e)}")
+
+@router.get("/files")
+async def get_files(
+        limit=100,
+):
+    cursor = 0
+    keys = []
+    while len(keys) < limit:  # Ограничение на 100 записей всего
+        cursor, batch = redis_client.scan(cursor, match="files:*", count=100)
+        keys.extend(batch)
+        if cursor == 0 or len(keys) >= 100:
+            break
+
+    # Обрезаем до 100, если набралось больше
+    keys = keys[:limit]
+    logger.info(f"{keys=}")
+    return keys

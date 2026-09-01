@@ -1,12 +1,14 @@
 import logging
 import os
 
+from app.api import router_socket, router_page
 from app.config import redis_client
 from app.logging_config import setup_logging
 from fastapi import FastAPI
 # Импортируем наш новый модуль с роутером
 from app.routers import users, upload
 from app.routers import profiles
+from fastapi.staticfiles import StaticFiles
 
 setup_logging()
 logger = logging.getLogger("fastapi")
@@ -29,6 +31,7 @@ app = FastAPI(title="My Architecture App",
               docs_url=None if os.getenv("ENV") == "production" else "/docs",
               redoc_url=None if os.getenv("ENV") == "production" else "/redoc"
               )
+app.mount('/static', StaticFiles(directory='app/static'), 'static')
 
 # Подключаем роутер к главному приложению.
 # Это похоже на подключение плагина.
@@ -37,6 +40,9 @@ app.include_router(users.router)
 app.include_router(profiles.router)
 
 app.include_router(upload.router)
+
+app.include_router(router_socket.router)
+app.include_router(router_page.router)
 
 @app.get("/")
 def root():

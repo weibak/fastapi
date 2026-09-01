@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from app.models.profile import Profile
+from app.models.profile import Profile, ProfilePydantic
 from fastapi import status, HTTPException
 from app.schemas import UserResponse, UserCreate
 from app.schemas.profile import ProfileResponse
@@ -77,3 +77,22 @@ async def get_users(
     # Extract the scalar objects (the User instances)
     users = result.scalars().all()
     return users
+
+@router.get("/profiles/{user_id}", response_model=ProfileResponse)
+async def get_user_by_id(
+        user_id: int,
+        db: AsyncSession = Depends(get_db)
+):
+    query = select(Profile).where(Profile.user_id == user_id)
+    result = await db.execute(query)
+    profile = result.scalar_one_or_none()
+    if profile:
+        profile_pydantic = ProfilePydantic.model_validate(profile)
+
+        # Шаг 5: Получение данных в нужном формате
+        return profile_pydantic.model_dump()
+
+    raise HTTPException(
+        status_code=status.HTTP_404_NOT_FOUND,
+        detail="Profile not found"
+    )

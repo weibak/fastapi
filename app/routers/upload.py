@@ -4,18 +4,10 @@ import os
 import string
 from random import choices
 from traceback import format_exc
-from typing import List
-from sqlalchemy import select
-
-from app.database import get_db
-from fastapi import APIRouter, Depends
-
-import requests
 
 from app.config import settings, celery_app, redis_client
 from app.logging_config import setup_logging
 from fastapi import APIRouter, HTTPException, UploadFile, Form
-from sqlalchemy.ext.asyncio import AsyncSession
 
 setup_logging()
 

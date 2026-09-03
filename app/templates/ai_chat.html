@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Чат с AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex flex-col items-center p-4">
+<h1 class="text-2xl font-bold mb-4">Чат с AI</h1>
+
+<!-- Хранение session_id -->
+<div id="ai-session" data-session-id="{{ session_id }}" class="hidden"></div>
+
+<!-- Область сообщений -->
+<div id="messages" class="w-full max-w-lg h-96 overflow-y-auto border border-gray-300 bg-white p-4 rounded-lg shadow-md"></div>
+
+<!-- Поле ввода, модель и кнопка -->
+<div class="flex mt-4 w-full max-w-lg items-center gap-2">
+    <input id="questionInput" type="text" placeholder="Введите вопрос для AI" class="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" />
+    <select id="modelSelect" class="p-2 border border-gray-300 rounded-lg">
+        <option value="gpt-4o-mini">gpt-4o-mini</option>
+        <option value="gpt-4o">gpt-4o</option>
+    </select>
+    <button onclick="sendQuestion()" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Отправить</button>
+</div>
+
+<script src="/static/ai_chat.js"></script>
+</body>
+</html>

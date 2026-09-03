@@ -2,6 +2,7 @@ from fastapi import APIRouter, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 import random
+import uuid
 
 
 templates = Jinja2Templates(directory='app/templates')
@@ -23,3 +24,10 @@ async def join_chat(request: Request, username: str = Form(...), room_id: int = 
                                        "username": username,
                                        "user_id": user_id}
                                       )
+
+
+@router.get("/ai_chat", response_class=HTMLResponse)
+async def ai_chat_page(request: Request):
+    """Page for chatting with the AI backend. A session_id is generated server-side."""
+    session_id = str(uuid.uuid4())
+    return templates.TemplateResponse(request, "ai_chat.html", {"request": request, "session_id": session_id})

@@ -12,3 +12,4 @@ forfastapi.sqlite
 alembic.ini
 *env.py
 .env
+/chroma_db/chroma.sqlite3

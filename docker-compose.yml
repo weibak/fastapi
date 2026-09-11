@@ -22,6 +22,11 @@ services:
     container_name: redis_broker
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
 
   celery_worker:
     build: .
@@ -41,7 +46,7 @@ services:
       - api
   flower:
     image: mher/flower
-    command: celery --broker=redis://redis:6379/0 flower
+    command: sh -c "sleep 5 && celery --broker=redis://redis:6379/0 flower"
     ports:
       - "5555:5555"
     depends_on:

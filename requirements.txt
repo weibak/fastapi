@@ -14,7 +14,7 @@ sqlalchemy_file
 httpx
 
 # Form Data & File Upload support
-python-multipart
+python-multipart==0.0.32
 pydantic-settings==2.6.1
 celery==5.4.0
 redis>=4.5.0
@@ -23,8 +23,18 @@ requests==2.32.3
 flower==2.0.1
 websockets==15.0    # Библиотека для работы с WebSocket
 
-booktype
+booktype==1.5
 pydantic==2.13.5 
 pydantic-core==2.46.5
 uvicorn==0.34.0     # ASGI сервер для запуска приложения
 jinja2==3.1.5       # Шаблонизатор для рендеринга HTML
+
+langchain==0.3.30
+langchain-openai==0.3.35
+langchain-core==0.3.86
+langchain_community==0.3.27
+docx2txt==0.9
+pypdf==6.16.2
+langchain_chroma==0.2.6
+
+langchain-text-splitters==0.3.11
